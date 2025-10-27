@@ -329,6 +329,10 @@ sys_open(void)
   f->off = 0;
   f->readable = !(omode & O_WRONLY);
   f->writable = (omode & O_WRONLY) || (omode & O_RDWR);
+  
+  // Log the file access
+  filelog_add(myproc()->pid, path);
+  
   return fd;
 }
 
@@ -417,6 +421,27 @@ sys_exec(void)
       return -1;
   }
   return exec(path, argv);
+}
+
+int
+sys_getlogs(void)
+{
+  struct filelog *logs;
+  int max_entries;
+  
+  if(argint(1, &max_entries) < 0)
+    return -1;
+    
+  // Limit max_entries to prevent huge buffer validation
+  if(max_entries > 100)
+    max_entries = 100;
+  if(max_entries < 0)
+    return -1;
+    
+  if(argptr(0, (void*)&logs, sizeof(struct filelog) * max_entries) < 0)
+    return -1;
+    
+  return filelog_get(logs, max_entries);
 }
 
 int

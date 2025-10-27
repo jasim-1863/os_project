@@ -1,6 +1,7 @@
 struct buf;
 struct context;
 struct file;
+struct filelog;
 struct inode;
 struct pipe;
 struct proc;
@@ -185,6 +186,11 @@ void            switchuvm(struct proc*);
 void            switchkvm(void);
 int             copyout(pde_t*, uint, void*, uint);
 void            clearpteu(pde_t *pgdir, char *uva);
+
+// filelog.c
+void            filelog_init(void);
+void            filelog_add(int pid, char* filename);
+int             filelog_get(struct filelog* logs, int max_entries);
 
 // number of elements in fixed-size array
 #define NELEM(x) (sizeof(x)/sizeof((x)[0]))

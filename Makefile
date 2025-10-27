@@ -3,6 +3,7 @@ OBJS = \
 	console.o\
 	exec.o\
 	file.o\
+	filelog.o\
 	fs.o\
 	ide.o\
 	ioapic.o\
@@ -177,6 +178,7 @@ UPROGS=\
 	_mkdir\
 	_rm\
 	_sh\
+	_showlogs\
 	_stressfs\
 	_usertests\
 	_wc\
